@@ -1,0 +1,62 @@
+Digori Parascovia - 323CC - Protocoale de Comunicatii - TEMA 3
+Client pentru o aplicatie REST API
+
+
+Implementarea acestei teme a inceput de la skeletul din laboratorul 10, 
+de unde am preluat fisierele de buffer.cpp, requests.cpp, helpers.cpp cu 
+mici modificari. 
+
+Pentru reprezentarea clientului am folosit un loop infinit care asteapta inputul
+utilizatorului pana la instructiunea "exit". In dependenta de comanda primita
+se initializeaza urmatorul eveniment. 
+-> register
+Verificam mai intaii daca cookie-ul de sesiune este gol, (daca nu e gol inseamna ca
+suntem deja logati) se citeste username-ul si password-ul, deschidem conexiunea si
+apelez functia register_user in care o sa creez json-ul de inregistrare si il 
+transmit la server. In urma raspunsului de la server verific daca statusCode-ul 
+este bun sau da o eroare.
+
+-> login
+La fel ca la register verificam cookie-ul de sesiune si apelez functia login_user()
+unde trimit un post request catre server cu continutul datelor de autentificare a 
+clientului. In dependenta de statusCode-ul primit din raspuns-ul serverului o sa 
+afisez mesajul aferent si returnez cooki-ul de sesiune.
+
+-> enter_library
+Verificam cookie-ul de sesiune daca nu este gol inseamna ca suntem deja logati si 
+trimit un get request cu cookie-ul respectiv. De la server se primeste raspunsul cu 
+statusCode-ul si token-ul de acces. Daca codul este 200 extragem token-ul din raspuns
+si returnez access_token-ul.
+
+-> get_books
+Verificam daca token-ul de access nu este null, deci avem access la librarie si putem
+trimite un get request cu token-ul de access catre server, care va raspunde cu lista de
+carti din librarie in format json. 
+
+-> get_book 
+Verificam daca avem access la librarie, citim id-ul cartii cautate si trimitem un get
+request cu token-ul de access la server care intoarce informatia despre carte in format
+json.
+
+-> add_books
+Verificam daca avem access la librarie, citim toate datele despre carte, transform aceste
+date in format json pe care le trimit server-ului cu un post request si headerurile pentru 
+autentificare, iar de la server primesc raspunsul cu codul de status si mesajul aferent.
+
+-> delete_book
+Verificam daca avem access la librarie, citim id-ul cartii si trimitem un delete request
+la server care va sterge cartea din librarie. 
+
+-> logout
+Verificam cookie-ul de sesiune, deci suntem logati si putem trimite un get request cu cookie-ul 
+de sesiune la server, care va raspunde cu codul de status. 
+
+
+Pentru manipularea cu datele de tip json am folosit nlohmann pentru cpp la recomandarea 
+din tema. De asemenea aceasta are o documentatie destul de ampla si bine explicata, am gasit
+si destul de multe exemple pe net cum sa extragi datele din json, deci am folosit-o din start
+pe aceasta. 
+
+Tema mi s-a parut destul de draguta si simpla, timp aproximativ de lucru 1,5 zile. 
+
+
